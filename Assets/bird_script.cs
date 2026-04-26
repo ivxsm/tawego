@@ -6,6 +6,9 @@ public class bird_script : MonoBehaviour
     public float flapStrength = 5; // You can change this number in Unity!
     public bool isAlive = true;
     public LogicScript logic;
+    
+    [Header("Audio Settings")]
+    public AudioSource collisionSound;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,13 +27,21 @@ public class bird_script : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        isAlive = false;
-        logic.gameOver();
+        if (isAlive) 
+        {
+            if (collisionSound != null) collisionSound.Play();
+            isAlive = false;
+            logic.gameOver();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        isAlive = false;
-        logic.gameOver();
+        if (isAlive) 
+        {
+            if (collisionSound != null) collisionSound.Play();
+            isAlive = false;
+            logic.gameOver();
+        }
     }
 }

@@ -6,8 +6,20 @@ public class pipspowner : MonoBehaviour
     public float spawnRate = 2;
     private float timer = 0;
     private float heightOffset = 10; 
+
     void Start()
     {
+        int difficulty = PlayerPrefs.GetInt("Difficulty", 1);
+        
+        if (difficulty == 1) // Easy
+        {
+            spawnRate = 3.0f; // More horizontal space between pipes
+        }
+        else if (difficulty == 2) // Hard
+        {
+            spawnRate = 1.25f; // Less horizontal space between pipes
+        }
+
         spawnPipe();       
     }
 
