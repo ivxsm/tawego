@@ -7,6 +7,10 @@ TagManager:
   - logic
   - New tag
   - Logic
+  - PipeDamage
+  - ScoreZone
+  - Coin
+  - KillZone
   layers:
   - Default
   - TransparentFX

@@ -627,9 +627,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   myRigidbody: {fileID: 1020513810}
-  flapStrength: 5
+  flapStrength: 3.1
+  maxUpwardSpeed: 7.4
   isAlive: 1
   logic: {fileID: 0}
+  fallCancelFactor: 0.6
+  baseGravityMultiplier: 1.18
+  easyFlapMultiplier: 1
+  easyGravityMultiplier: 1.05
+  hardFlapMultiplier: 1.2
+  hardGravityMultiplier: 1.02
+  fallDeathY: -22
+  ceilingDeathY: 24
+  behindCameraMargin: 2.5
   collisionSound: {fileID: 1020513811}
 --- !u!70 &1020513809
 CapsuleCollider2D:
