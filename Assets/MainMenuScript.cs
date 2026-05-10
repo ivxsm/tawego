@@ -47,9 +47,86 @@ public class MainMenuScript : MonoBehaviour
         };
     }
 
+    /// <summary>Transform.Find only searches direct children; pasted UI may be nested.</summary>
+    static Transform FindDeepChild(Transform parent, string childName)
+    {
+        if (parent == null) return null;
+        if (parent.name == childName) return parent;
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            var c = parent.GetChild(i);
+            if (c.name == childName)
+                return c;
+            var d = FindDeepChild(c, childName);
+            if (d != null)
+                return d;
+        }
+        return null;
+    }
+
+    /// <summary>Prefer the Canvas that actually contains the menu shop UI (not another random Canvas).</summary>
+    static Canvas GetMenuCanvas()
+    {
+        var canvases = Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None);
+        foreach (var c in canvases)
+        {
+            if (c == null) continue;
+            if (FindDeepChild(c.transform, "ShopButton") != null)
+                return c;
+        }
+        return Object.FindFirstObjectByType<Canvas>();
+    }
+
+    void ResolveShopPanelReference()
+    {
+        if (_shopPanel != null) return;
+        var canvas = GetMenuCanvas();
+        if (canvas == null) return;
+        var panelTr = FindDeepChild(canvas.transform, "ShopPanel");
+        if (panelTr != null)
+            _shopPanel = panelTr.gameObject;
+    }
+
+    /// <summary>Paste-from-Play often clears Button On Click; wire at runtime if the list is empty.</summary>
+    void EnsureShopButtonWired(Transform canvasRoot)
+    {
+        var shopBtnTf = FindDeepChild(canvasRoot, "ShopButton");
+        if (shopBtnTf == null) return;
+        var btn = shopBtnTf.GetComponent<Button>();
+        if (btn == null) return;
+        if (btn.onClick.GetPersistentEventCount() > 0)
+            return;
+        btn.onClick.AddListener(OpenShop);
+    }
+
+    /// <summary>Done + skin buttons lose On Click after paste-from-Play; wire when Inspector list is empty.</summary>
+    void EnsureShopPanelInnerWired()
+    {
+        ResolveShopPanelReference();
+        if (_shopPanel == null) return;
+
+        var closeTf = FindDeepChild(_shopPanel.transform, "CloseShop");
+        if (closeTf != null)
+        {
+            var closeBtn = closeTf.GetComponent<Button>();
+            if (closeBtn != null && closeBtn.onClick.GetPersistentEventCount() == 0)
+                closeBtn.onClick.AddListener(CloseShop);
+        }
+
+        for (int i = 0; i < SkinCount; i++)
+        {
+            int idx = i;
+            var skinTf = FindDeepChild(_shopPanel.transform, $"SkinBtn_{i}");
+            if (skinTf == null) continue;
+            var skinBtn = skinTf.GetComponent<Button>();
+            if (skinBtn != null && skinBtn.onClick.GetPersistentEventCount() == 0)
+                skinBtn.onClick.AddListener(() => SelectSkin(idx));
+        }
+    }
+
     void BuildMenuUiIfNeeded()
     {
-        var canvas = Object.FindFirstObjectByType<Canvas>();
+        var canvas = GetMenuCanvas();
         if (canvas == null) return;
 
         Font font = MenuFont();
@@ -65,7 +142,7 @@ public class MainMenuScript : MonoBehaviour
             frt.pivot = new Vector2(0.5f, 1f);
             frt.anchoredPosition = new Vector2(0f, -140f);
             frt.sizeDelta = new Vector2(220f, 220f);
-            frame.AddComponent<Image>().color = new Color(0.08f, 0.1f, 0.14f, 0.92f);
+            // Frame is layout-only; character uses CharacterPreview Image.
 
             var prevGo = new GameObject("CharacterPreview");
             prevGo.transform.SetParent(frame.transform, false);
@@ -80,11 +157,18 @@ public class MainMenuScript : MonoBehaviour
         }
         else
         {
-            _previewImage = canvas.transform.Find(previewPath).GetComponent<Image>();
+            var prevTf = canvas.transform.Find(previewPath);
+            if (prevTf != null)
+                _previewImage = prevTf.GetComponent<Image>();
         }
 
-        if (canvas.transform.Find("ShopButton") != null)
+        if (FindDeepChild(canvas.transform, "ShopButton") != null)
+        {
+            ResolveShopPanelReference();
+            EnsureShopButtonWired(canvas.transform);
+            EnsureShopPanelInnerWired();
             return;
+        }
 
         var shopBtnGo = new GameObject("ShopButton");
         shopBtnGo.transform.SetParent(canvas.transform, false);
@@ -246,12 +330,16 @@ public class MainMenuScript : MonoBehaviour
 
     public void OpenShop()
     {
-        if (_shopPanel != null) _shopPanel.SetActive(true);
+        ResolveShopPanelReference();
+        if (_shopPanel != null)
+            _shopPanel.SetActive(true);
     }
 
     public void CloseShop()
     {
-        if (_shopPanel != null) _shopPanel.SetActive(false);
+        ResolveShopPanelReference();
+        if (_shopPanel != null)
+            _shopPanel.SetActive(false);
     }
 
     public void SelectSkin(int index)

@@ -422,7 +422,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.7, y: -48.77}
+  m_AnchoredPosition: {x: 14.7, y: -44.8}
   m_SizeDelta: {x: 170, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &824232674
@@ -975,7 +975,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 51.9, y: -3.3}
+  m_AnchoredPosition: {x: 51.9, y: 222.4}
   m_SizeDelta: {x: 823.3, y: 223.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1177017173
@@ -1311,6 +1311,23 @@ MonoBehaviour:
   playerScore: 0
   scoreText: {fileID: 0}
   gameOverScreen: {fileID: 1237463535}
+  winScreen: {fileID: 0}
+  pipesHudText: {fileID: 0}
+  coinsHudText: {fileID: 0}
+  timerHudText: {fileID: 0}
+  shieldHudText: {fileID: 0}
+  powerBarFill: {fileID: 0}
+  powerBarBackground: {fileID: 0}
+  gameOverStatsText: {fileID: 0}
+  winStatsText: {fileID: 0}
+  pipesPassed: 0
+  coinsCollected: 0
+  power01: 1
+  pipeHitsTaken: 0
+  shieldTimeRemaining: 0
+  matchTimer: 60
+  isGameOver: 0
+  hasWon: 0
 --- !u!4 &1665269530
 Transform:
   m_ObjectHideFlags: 0
