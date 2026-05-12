@@ -17,7 +17,7 @@ public class pipspowner : MonoBehaviour
         }
         else if (difficulty == 2) // Hard
         {
-            spawnRate = 1.25f; // Less horizontal space between pipes
+            spawnRate = 1.65f; // Still hard, but gives a bit more horizontal space
         }
 
         spawnPipe();       

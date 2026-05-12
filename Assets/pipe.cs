@@ -18,7 +18,7 @@ public class pipe : MonoBehaviour
         else if (difficulty == 2) // Hard Mode
         {
             moveSpeed = 8f; // Faster speed
-            AdjustGap(-1.0f); // Decrease gap
+            AdjustGap(-0.25f); // Slightly tighter than normal, but still playable
         }
     }
 
