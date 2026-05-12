@@ -4,7 +4,10 @@ Flappy Bird-style game with the tawago character.
 
 Demo video:
 
-https://github.com/user-attachments/assets/2bc1e3d6-ab4d-48ed-92fd-00328f5de17f
+
+https://github.com/user-attachments/assets/de3c2d81-1aa6-4fed-a369-ccd848617540
+
+
 
 ## Scenes
 
