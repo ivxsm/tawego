@@ -1,4 +1,4 @@
-# Tawego Flappy Bird (Games class phase 1)
+# Tawego Flappy Bird (Games class phase 2&3)
 
 Flappy Bird-style game with the tawago character.
 
